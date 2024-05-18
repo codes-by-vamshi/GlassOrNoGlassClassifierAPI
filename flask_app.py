@@ -20,8 +20,10 @@ def predict():
     img = Image.open(request.files['file'])
     img_array = preprocess_image(img)
     predictions = model.predict(img_array)
-    class_idx = np.argmax(predictions)
-    class_labels = ['With out glasses', 'With glasses']
+    print(predictions[0])
+    class_idx = np.argmax(predictions[0])
+    print(class_idx)
+    class_labels = ['With glasses','Without glasses']
     return jsonify({'prediction': class_labels[class_idx]})
 
 if __name__ == '__main__':
