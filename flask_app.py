@@ -1,19 +1,21 @@
-from flask import Flask, request, jsonify
+import os
+import numpy as np
 import tensorflow as tf
 from tensorflow.keras.preprocessing import image
-import numpy as np
+from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
+from flask import Flask, request, jsonify
 from PIL import Image
-import io
-import os
 
 app = Flask(__name__)
-model = tf.keras.models.load_model(os.path.join(os.getcwd(),'mobilenet_glasses_classifier.h5'))
+
+# Load the trained MobileNetV2 model
+model = tf.keras.models.load_model(os.path.join(os.getcwd(), 'mobilenet_glasses_classifier.h5'))
 
 def preprocess_image(img):
-    img = img.resize((224,224))
+    img = img.resize((224, 224))
     img_array = image.img_to_array(img)
+    img_array = preprocess_input(img_array)  # Preprocess the image for MobileNetV2
     img_array = np.expand_dims(img_array, axis=0)
-    img_array /= 255.0
     return img_array
 
 @app.route('/predict', methods=['POST'])
@@ -24,8 +26,9 @@ def predict():
     print(predictions[0])
     class_idx = np.argmax(predictions[0])
     print(class_idx)
-    class_labels = ['With glasses','Without glasses']
+    class_labels = ['With glasses', 'Without glasses']
     return jsonify({'prediction': class_labels[class_idx]})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+
