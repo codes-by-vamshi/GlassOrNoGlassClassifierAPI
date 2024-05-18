@@ -6,7 +6,7 @@ from PIL import Image
 import io
 
 app = Flask(__name__)
-model = tf.keras.models.load_model('resnet_glasses_classifier.h5')
+model = tf.keras.models.load_model('./resnet_glasses_classifier.h5')
 
 def preprocess_image(img):
     img = img.resize((224,224))
