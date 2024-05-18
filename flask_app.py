@@ -7,7 +7,7 @@ import io
 import os
 
 app = Flask(__name__)
-model = tf.keras.models.load_model(os.path.join(os.getcwd(),'resnet_glasses_classifier.h5'))
+model = tf.keras.models.load_model(os.path.join(os.getcwd(),'mobilenet_glasses_classifier.h5'))
 
 def preprocess_image(img):
     img = img.resize((224,224))
