@@ -4,9 +4,10 @@ from tensorflow.keras.preprocessing import image
 import numpy as np
 from PIL import Image
 import io
+import os
 
 app = Flask(__name__)
-model = tf.keras.models.load_model('./resnet_glasses_classifier.h5')
+model = tf.keras.models.load_model(os.path.join(os.getcwd(),'resnet_glasses_classifier.h5'))
 
 def preprocess_image(img):
     img = img.resize((224,224))
